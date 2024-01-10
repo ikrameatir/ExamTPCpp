@@ -82,27 +82,4 @@ double Zoo::averageAgeForType(const std::string& type) const {
     return count > 0 ? totalAge / count : 0.0;
 }
 
-std::string Zoo::predictTypeWithKNN(const Animal& newAnimal, int k, const std::string& dataType) {
-    if (dataType == "numerical") {
-        std::vector<std::pair<double, double>> trainData;
-        for (const auto& animal : animals) {
-            trainData.emplace_back(animal->getWeight(), animal->getHeight());
-        }
-        std::pair<double, double> target = std::make_pair(newAnimal.getWeight(), newAnimal.getHeight());
-        
-        KNNDouble knn(k);
-        auto neighbors = knn.findNearestNeighbours(trainData, target);
-    } else if (dataType == "categorical") {
-        std::vector<std::vector<std::string>> trainData;
-        for (const auto& animal : animals) {
-            trainData.push_back({animal->getColor(), animal->getDiet(), animal->getHabitat(), animal->getSounds()});
-        }
-        std::vector<std::string> target = {newAnimal.getColor(), newAnimal.getDiet(), newAnimal.getHabitat(), newAnimal.getSounds()};
-        
-        KNNString knn(k);
-        auto neighbors = knn.findNearestNeighbours(trainData, target);
-    }
-    return "inconnu";
-}
-
 
